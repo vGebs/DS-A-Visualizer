@@ -6,3 +6,23 @@
 //
 
 import Foundation
+import Combine
+
+protocol QueueProtocol {
+    associatedtype T
+    func enqueue(val: T)
+    func dequeue() -> T?
+}
+
+class Queue<T>: QueueProtocol, ObservableObject {
+    
+    @Published private var queue: [T] = []
+    
+    func enqueue(val: T) {
+        queue.append(val)
+    }
+    
+    func dequeue() -> T? {
+        return queue.remove(at: 0)
+    }
+}
