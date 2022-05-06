@@ -18,6 +18,14 @@ protocol StackProtocol {
 class Stack<T>: StackProtocol, ObservableObject {
     @Published private(set) var stack: [T] = []
 
+    @Published private(set) var count: Int = 0
+    
+    init() {
+        $stack
+            .map { $0.count }
+            .assign(to: &$count)
+    }
+    
     func push(_ val: T) {
         stack.append(val)
     }

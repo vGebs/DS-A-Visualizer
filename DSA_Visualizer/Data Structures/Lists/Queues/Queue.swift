@@ -16,7 +16,7 @@ protocol QueueProtocol {
 
 class Queue<T>: QueueProtocol, ObservableObject {
     
-    @Published private var queue: [T] = []
+    @Published private(set) var queue: [T] = []
     
     func enqueue(_ val: T) {
         queue.append(val)

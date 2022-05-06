@@ -1,25 +1,24 @@
 //
-//  StackVisualizer.swift
+//  QueueVisualizer.swift
 //  DSA_Visualizer
 //
-//  Created by Vaughn on 2022-05-05.
+//  Created by Vaughn on 2022-05-06.
 //
 
-import Foundation
 import SwiftUI
 
-struct StackVisualizer: View {
-    @ObservedObject var stackViewModel = StackViewModel()
+struct QueueVisualizer: View {
+    @ObservedObject var queueViewModel = QueueViewModel()
         
     var body: some View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
             VStack{
                 HStack {
-                    Text("Stack: ")
+                    Text("Queue: ")
                         .font(.system(size: 30, weight: .semibold, design: .rounded))
                         .foregroundColor(.pink)
-                    Text("First in, Last out")
+                    Text("First in, First out")
                         .font(.system(size: 20, weight: .thin, design: .rounded))
                         .foregroundColor(.white)
                     
@@ -28,33 +27,33 @@ struct StackVisualizer: View {
                 .padding(.top)
                 .padding(.leading)
                 
-                SliderView(slider: stackViewModel.singleKnobSlider)
+                SliderView(slider: queueViewModel.singleKnobSlider)
                 
                 Button(action: {
                     withAnimation {
-                        stackViewModel.push()
+                        queueViewModel.enqueue()
                     }
                 }) {
-                    Text("PUSH")
+                    Text("ENQUEUE")
                         .font(.system(size: 35, weight: .bold, design: .rounded))
                 }
                 .padding()
                 
                 Divider()
                 
-                if stackViewModel.stack.count > 0 {
+                if queueViewModel.queue.count > 0 {
                     Button(action: {
                         withAnimation {
-                            stackViewModel.pop()
+                            queueViewModel.dequeue()
                         }
                     }){
-                        Text("POP")
+                        Text("DEQUEUE")
                             .font(.system(size: 35, weight: .bold, design: .rounded))
                     }
                 }
                 
                 ScrollView(.vertical, showsIndicators: false) {
-                    ForEach(stackViewModel.stack.reversed(), id: \.self) { num in
+                    ForEach(queueViewModel.queue, id: \.self) { num in
                         Text("\(num)")
                             .font(.system(size: 22, weight: .semibold, design: .rounded))
                             .foregroundColor(.white)
@@ -71,11 +70,5 @@ struct StackVisualizer: View {
         .onTapGesture {
             hideKeyboard()
         }
-    }
-}
-
-extension View {
-    func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

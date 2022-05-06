@@ -8,35 +8,30 @@
 import Foundation
 import Combine
 
-class StackViewModel: ObservableObject {
-    @Published var value = "" {
-        didSet {
-            let filtered = value.filter { $0.isNumber }
-            
-            if value != filtered {
-                value = filtered
-            }
-        }
-    }
-    
+class StackViewModel: ObservableObject {    
     @Published private var stack_ = Stack<Int>()
     @Published private(set) var stack: [Int] = []
     
-    private var subs: [AnyCancellable] = []
+    @Published var singleKnobSlider = CustomSlider(start: 0, end: 1000, doubleKnob: false)
     
     init() {
         stack_.$stack
-            .sink { [weak self] stack in
-                self?.stack = stack
-            }.store(in: &subs)
+            .map { $0 }
+            .assign(to: &$stack)
     }
     
     func push() {
-        if !value.isEmpty {
-            if let num = Int(value) {
-                stack_.push(num)
-                value = ""
+        let currentVal = Int(singleKnobSlider.highHandle.currentValue)
+        var duplicate = false
+        
+        for num in stack {
+            if currentVal == num {
+                duplicate = true
             }
+        }
+        
+        if !duplicate {
+            stack_.push(currentVal)
         }
     }
     
