@@ -10,7 +10,7 @@ import Combine
 
 protocol QueueProtocol {
     associatedtype T
-    func enqueue(val: T)
+    func enqueue(_ val: T)
     func dequeue() -> T?
 }
 
@@ -18,7 +18,7 @@ class Queue<T>: QueueProtocol, ObservableObject {
     
     @Published private var queue: [T] = []
     
-    func enqueue(val: T) {
+    func enqueue(_ val: T) {
         queue.append(val)
     }
     

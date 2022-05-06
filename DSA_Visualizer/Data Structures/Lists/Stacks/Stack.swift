@@ -11,14 +11,14 @@ import Combine
 protocol StackProtocol {
     associatedtype T
         
-    func push(val: T)
+    func push(_ val: T)
     func pop() -> T?
 }
 
 class Stack<T>: StackProtocol, ObservableObject {
-    @Published private var stack: [T] = []
+    @Published private(set) var stack: [T] = []
 
-    func push(val: T) {
+    func push(_ val: T) {
         stack.append(val)
     }
     
